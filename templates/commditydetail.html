@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="cn">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>商品详情</title>
+
+    <meta name="description" content="Source code generated using layoutit.com">
+    <meta name="author" content="LayoutIt!">
+
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'bootstrap/css/style.css' %}" rel="stylesheet">
+    <style type="text/css" rel="stylesheet">
+        td {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: keep-all;
+
+
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+
+                <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <a class="navbar-brand" href="{% url 'index' %}">主页</a>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="navbar-nav">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{% url 'users:cart' %}">购物车 <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'booklist:search' %}">书单</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink"
+                               data-toggle="dropdown">书籍分类</a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="{% url 'commoditys:list'%}?keywords=文学">文学</a>
+                                <a class="dropdown-item" href="{% url 'commoditys:list'%}?keywords=计算机">计算机</a>
+                                <a class="dropdown-item" href="{% url 'commoditys:list'%}?keywords=教育">教育</a>
+                                <a class="dropdown-item" href="{% url 'commoditys:list'%}?keywords=社会科学">社会科学</a>
+                                <a class="dropdown-item" href="{% url 'commoditys:list'%}?keywords=艺术">艺术</a>
+                                <a class="dropdown-item" href="{% url 'commoditys:list'%}?keywords=法律">法律</a>
+                                <a class="dropdown-item" href="{% url 'commoditys:list'%}?keywords=政治军事">政治军事</a>
+                                <a class="dropdown-item" href="{% url 'commoditys:list'%}?keywords=自然科学">自然科学</a>
+                                </div>
+
+
+                        </li>
+                    </ul>
+                    <form class="form-inline" method="get" action="{% url 'commoditys:list' %}">
+                        <input class="form-control mr-sm-2" type="text" id="keywords" name="keywords">
+                        <button class="btn btn-primary my-2 my-sm-0" type="submit">
+                            搜索
+                        </button>
+                    </form>
+                    <ul class="navbar-nav ml-md-auto">
+                        {% if  request.user.is_authenticated %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="http://example.com"
+                                   id="navbarDropdownMenuLink1" data-toggle="dropdown">个人中心</a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="dropdown-item" href="{% url 'users:usercenter' %}">个人中心</a>
+                                    <a class="dropdown-item" href="{% url 'users:unpaidorder' %}">我的订单</a>
+                                    <a class="dropdown-item" href="{% url 'users:cart' %}">购物车</a>
+
+                                    <a class="dropdown-item" href="{% url 'users:wallet' %}">我的钱包</a>
+                                    <a class="dropdown-item" href="{% url 'users:addresslist' %}">我的地址</a>
+                                    <a class="dropdown-item" href="{% url 'users:message' %}">我的消息</a>
+                                    <div class="dropdown-divider">
+                                    </div>
+                                    <a class="dropdown-item" href="{% url 'users:logout' %}">退出登录</a>
+                                </div>
+                            </li>
+                        {% else %}
+                            <li class="nav-item active">
+                                <a class="nav-link" href="{% url 'users:login' %}">登录/注册 <span class="sr-only">(current)</span></a>
+                            </li>
+                        {% endif %}
+
+
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <br>&nbsp;
+    <div class="row">
+        <div class="col-md-12">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'commoditys:list'%}?keywords={{ commodity.catagory.cata_up.cata_up.name }}">{{ commodity.catagory.cata_up.cata_up.name }}</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'commoditys:list'%}?keywords={{ commodity.catagory.cata_up.name }}">{{ commodity.catagory.cata_up.name }}</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <a href="{% url 'commoditys:list'%}?keywords={{ commodity.catagory.name }}">{{ commodity.catagory.name }}</a>
+                    </li>
+                </ol>
+            </nav>
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="row">
+                        <div class="col-md-5" style="text-align: center;">
+                            <img alt="Bootstrap Image Preview" src="{{ MEDIA_URL }}{{ commodity.image }}"
+                                 style="height: auto;width: auto;max-height: 100%;max-width: 100%">
+                            <br>
+                            <br>
+                            <a id="modal-284005" href="#modal-container-284005" role="button" class="btn"
+                               data-toggle="modal">添加到书单</a>
+
+                            <div class="modal fade" id="modal-container-284005" role="dialog"
+                                 aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                     <form>
+                                    <div class="modal-content">
+
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="myModalLabel">
+                                                选择你的书单
+                                            </h5>
+
+                                            <button type="button" class="close" data-dismiss="modal">
+                                                <span aria-hidden="true">×</span>
+                                                <input hidden="hidden" value="{{ commodity.id }}" id="commodity">
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            {% if user.is_authenticated %}
+                                            <select name="booklistchose" class="form-control" id="booklistchose">
+                                            {% for booklist in booklists %}
+                                                <option value="{{ booklist.id }}">{{ booklist.title }}</option>
+                                            {% endfor %}
+                                            </select>
+                                                {% else %}
+                                                <span>您尚未登录</span>
+                                            {% endif %}
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            {% if user.is_authenticated %}
+                                                <button id="save" type="button" class="btn btn-primary">
+                                                保存到书单
+                                            </button>
+                                            {% endif %}
+
+
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                                关闭
+                                            </button>
+                                        </div>
+                                    </div>
+                                     </form>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-7">
+                            <input hidden="hidden" value="{{ could_buy }}" id="could_buy">
+                            <input hidden="hidden" value="{{ commodity.id }}" name="id" id="id">
+                            <dl>
+                                <dt>
+                                    商品：{% ifequal commodity.is_sale 'out' %}<span style="color: red">商品已下架</span>{% endifequal %}
+                                </dt>
+                                <dd>
+                                    {{ commodity.name }}<p style="font-size: smaller;">（销售了{{ commodity.sell_nums }}本，余量{{ commodity.stock }}本）</p>
+                                </dd>
+                                <dt>
+                                    作者：
+                                </dt>
+                                <dd>
+                                    {{ commodity.author }}
+                                </dd>
+                                <dt>
+                                    出版社：
+                                </dt>
+                                <dd>
+                                    {{ commodity.publisher }}
+                                </dd>
+                                <dt>
+                                    数量:
+                                </dt>
+                                <dd>
+                                    <input id="nums" data_step="1" data_min="0" data_max="{{ commodity.stock }}" data_digit="0" value="{% ifequal commodity.stock 0 %}0{% else %}1{% endifequal %}"
+                                           style="width:100px;"/><br>
+                                </dd>
+
+                            </dl>
+                            <p>
+                                <a class="btn btn-outline-primary" id="addcart" href="#">加入购物车</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <h6 class="text-left">
+                        推荐同类商品
+                    </h6>
+                    <hr style="height:1px;border:none;border-top:1px dotted #808080;"/>
+                    <div class="col-md-12 card">
+                        <table class="table" style="max-width: 300px;table-layout: fixed">
+                            <thead>
+                            <tr>
+                                <th>
+                                    商品
+                                </th>
+
+                                <th>
+                                    作者
+                                </th>
+
+                            </tr>
+                            </thead>
+                            <tbody style="font-size: smaller">
+                            {% for com in recommend %}
+                            <tr>
+
+                                <td>
+                                    <a href="{% url 'commoditys:detail' com.id %}">{{ com.name }}</a>
+                                </td>
+                                <td>
+                                    {{ com.author }}
+                                </td>
+
+                            </tr>
+                            {% endfor %}
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+<br>
+<div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" href="#">商品介绍</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'commoditys:comment' commodity.id %}">评论</a>
+            </li>
+
+        </ul>
+    </div>
+    <div class="col-md-1"></div>
+</div>
+<div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+
+        <br>
+        <div class="card">
+            <h5 class="card-header">
+                商品信息
+            </h5>
+            <div class="card-body" style="font-size: small;">
+                <p class="card-text" style="margin-left: 10px">
+                <table class="table" style="max-width:1000px;table-layout: fixed;margin-left: 15px">
+
+                    <tbody>
+                    <tr>
+
+                        <td>
+                            书名：{{ commodity.name }}
+                        </td>
+                        <td>
+                            作者：{{ commodity.author }}
+                        </td>
+                        <td>
+                            出版社：{{ commodity.publisher }}
+                        </td>
+
+                    </tr>
+                    <tr class="">
+
+                        <td>
+                            ISBN：{{ commodity.isbn }}
+                        </td>
+                        <td>
+                            开本：{{ commodity.size }}
+                        </td>
+                        <td>
+                            出版日期：{{ commodity.pubdate }}
+                        </td>
+
+
+                    </tr>
+                    <tr class="">
+
+                        <td>
+                            子分类：{{ commodity.catagory.name }}
+                        </td>
+                        <td>
+                            系统编码：{{ commodity.id }}
+                        </td>
+                        <td>
+
+                        </td>
+
+
+                    </tr>
+
+                    </tbody>
+                </table>
+
+                </p>
+            </div>
+
+        </div>
+        <br>
+        <div class="card">
+            <h5 class="card-header">
+                商品介绍
+            </h5>
+            <div class="card-body">
+                <p class="card-text">
+                <p style="margin: 20px;">
+                    {{ desc|linebreaks }}
+                </p>
+                </p>
+            </div>
+
+        </div>
+        <br>
+        <div class="card">
+            <h5 class="card-header">
+                商品目录
+            </h5>
+            <div class="card-body">
+                <p class="card-text">
+                <p style="margin-left: 30px;margin-top: 10px;margin-bottom: 10px;font-size: small">
+
+                    {{ catalog|linebreaksbr }}
+
+
+                </p>
+                </p>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="col-md-1"></div>
+</div>
+<br>
+<br>
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <h5 class="card-header">
+                关于网站
+            </h5>
+            <div class="card-block">
+                <p class="card-text">
+                    网站制作者：Smallj<br>
+                    网站名字：烟海书店电商网站<br>
+                    开始时间：2018.4.26
+                </p>
+            </div>
+            <div class="card-footer">
+                版权所有：Smallj
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <h5 class="card-header">
+                网站技术声明
+            </h5>
+            <div class="card-block">
+                <p class="card-text">
+                    网站技术使用：
+                    Django，<br>Bootstrap<br><br>
+                </p>
+            </div>
+            <div class="card-footer">
+                敬请关注
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+
+<script src="{% static 'bootstrap/js/jquery.min.js' %}"></script>
+<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'bootstrap/js/scripts.js' %}"></script>
+<script src="{% static 'js/num-alignment.js' %}"></script>
+
+<script>
+    $('#addcart').click(function () {
+        if ('{{ could_buy }}'=='1')
+        {
+            alert("该物品可能暂停销售，您可能未设置支付密码，请前往个人中心设置支付密码");
+            return 1;
+        }
+        var id = $('#id').val();
+        var nums = $('#nums').val();
+        $.ajax({
+                cache: false,
+                type: "GET",
+                url: "{% url 'commoditys:addtocart' %}",
+                data: {'id': id, 'count': nums},
+                async: true,
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                success: function (data) {
+                    if (data.status == 'fail') {
+                        if (data.msg == '您还未登录'){
+                            alert(data.msg);
+                            window.location.href='{% url "users:login" %}';
+                        }
+                        else {
+                            alert("添加失败,可能原因：\n您的购物车已有此商品，商品数量不够");
+                        }
+
+
+                    } else if (data.status == 'success') {
+                        if(confirm("已添加成功，是否前往购物车结算")){
+                            window.location.href="{% url 'users:cart' %}";
+
+　　
+                        }
+                    }
+                },
+            });
+    })
+</script>
+<script>
+    $('#save').click(function () {
+        var booklist = $('#booklistchose').val();
+        var commodity = $('#commodity').val();
+
+        $.ajax({
+                cache: false,
+                type: "GET",
+                url: "{% url 'booklist:addbook' %}",
+                data: {'commodity_id': commodity, 'booklist_id': booklist},
+                async: true,
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                success: function (data) {
+                    if (data.status == 'fail') {
+                        alert("添加失败,可能原因：\n这个书单已经存在这个商品");
+
+                    } else if (data.status == 'success') {
+                        alert("添加成功");
+                        $('#modal-container-284005').modal('hide');
+
+　　
+                        }
+                    }
+                },
+            );
+    })
+</script>
+</body>
+</html>

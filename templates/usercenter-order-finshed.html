@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="cn">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>用户中心</title>
+
+    <meta name="description" content="Source code generated using layoutit.com">
+    <meta name="author" content="LayoutIt!">
+
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'bootstrap/css/style.css' %}" rel="stylesheet">
+
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+
+                <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <a class="navbar-brand" href="{% url 'index' %}">主页</a>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="navbar-nav">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{% url 'users:cart' %}">购物车 <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'booklist:search' %}">书单</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink"
+                               data-toggle="dropdown">书籍分类</a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="{% url 'commoditys:list'%}?keywords=文学">文学</a>
+                                <a class="dropdown-item" href="{% url 'commoditys:list'%}?keywords=计算机">计算机</a>
+                                <a class="dropdown-item" href="{% url 'commoditys:list'%}?keywords=教育">教育</a>
+                                <a class="dropdown-item" href="{% url 'commoditys:list'%}?keywords=社会科学">社会科学</a>
+                                <a class="dropdown-item" href="{% url 'commoditys:list'%}?keywords=艺术">艺术</a>
+                                <a class="dropdown-item" href="{% url 'commoditys:list'%}?keywords=法律">法律</a>
+                                <a class="dropdown-item" href="{% url 'commoditys:list'%}?keywords=政治军事">政治军事</a>
+                                <a class="dropdown-item" href="{% url 'commoditys:list'%}?keywords=自然科学">自然科学</a>
+                                </div>
+
+
+                        </li>
+                    </ul>
+                    <form class="form-inline" method="get" action="{% url 'commoditys:list' %}">
+                        <input class="form-control mr-sm-2" type="text" id="keywords" name="keywords">
+                        <button class="btn btn-primary my-2 my-sm-0" type="submit">
+                            搜索
+                        </button>
+                    </form>
+                    <ul class="navbar-nav ml-md-auto">
+                        {% if  request.user.is_authenticated %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="http://example.com"
+                                   id="navbarDropdownMenuLink1" data-toggle="dropdown">个人中心</a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="dropdown-item" href="{% url 'users:usercenter' %}">个人中心</a>
+                                    <a class="dropdown-item" href="{% url 'users:unpaidorder' %}">我的订单</a>
+                                    <a class="dropdown-item" href="{% url 'users:cart' %}">购物车</a>
+
+                                    <a class="dropdown-item" href="{% url 'users:wallet' %}">我的钱包</a>
+                                    <a class="dropdown-item" href="{% url 'users:addresslist' %}">我的地址</a>
+                                    <a class="dropdown-item" href="{% url 'users:message' %}">我的消息</a>
+                                    <div class="dropdown-divider">
+                                    </div>
+                                    <a class="dropdown-item" href="{% url 'users:logout' %}">退出登录</a>
+                                </div>
+                            </li>
+                        {% else %}
+                            <li class="nav-item active">
+                                <a class="nav-link" href="{% url 'users:login' %}">登录/注册 <span class="sr-only">(current)</span></a>
+                            </li>
+                        {% endif %}
+
+
+                    </ul>
+                </div>
+            </nav>
+            <br>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col-md-3">
+            <div class="list-group">
+                <a href="{% url 'users:usercenter' %}" class="list-group-item">个人中心</a>
+                <a href="{% url 'users:cart' %}" class="list-group-item ">购物车</a>
+                <a href="{% url 'users:unpaidorder' %}" class="list-group-item  list-group-item-action active">我的订单</a>
+                <a href="{% url 'booklist:mybooklist'  %}" class="list-group-item ">我的书单</a>
+                <a href="{% url 'users:addresslist' %}" class="list-group-item ">我的地址</a>
+                <a href="{% url 'users:wallet' %}" class="list-group-item ">我的钱包</a>
+                <a href="{% url 'users:message' %}" class="list-group-item ">我的消息 <span
+                        class="badge badge-light badge-pill" style="color: #cc3300">{{ request.user.messagenums }}</span></a>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link " href="{% url 'users:unpaidorder' %}">未支付</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'users:paidorder' %}">待收货</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{% url 'users:finishedorder' %}">已完成</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " href="{% url 'users:returnorder' %}">售后/退货</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                {% for order in all_orders.object_list %}
+
+                        <div class="col-md-12 card" style="margin-bottom: 10px;margin-top: 10px">
+                    <table class="table ">
+                        <thead>
+                        <tr>
+                            <th>
+                                订单编号：{{ order.id }}
+                            </th>
+                            <th colspan="3">
+                                日期：{{ order.add_time }}
+                            </th>
+
+
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for delivery in order.get_delivery %}
+                            <tr>
+                            <td hidden="hidden">{{ delivery.id }}</td>
+                            <td>
+                                <div style="display: inline">
+
+                                    <a href="{% url 'commoditys:detail' delivery.commodity.id %}"><img src="{{ MEDIA_URL }}{{ delivery.commodity.image }}" alt=""
+                                         style="width: auto;height: 80px;float: left;margin-right: 10px"></a>
+                                    <p style="font-size: smaller">{{ delivery.commodity.name }}<br>{{ delivery.commodity.publisher }}<br>{{ delivery.commodity.author }}</p>
+                                </div>
+                            </td>
+                            <td>
+                                数量：{{ delivery.nums }}<br>
+                                快递单号：{{ delivery.mytracking_nums }}
+                            </td>
+                            <td>
+                                价格：{{ delivery.get_totalprice }}
+                            </td>
+                            <td>
+                                <button {% ifequal delivery.is_re 1 %}disabled="disabled" title="此单已退或处理中" {% endifequal %} class="btn  btn-outline-primary" name="return">申请售后</button>
+                                <a class="btn  btn-outline-primary" href="{% url 'commoditys:comment' delivery.commodity.id %}" >去评价</a>
+                            </td>
+
+                        </tr>
+                            {% endfor %}
+
+
+
+
+                            <td>
+                                总价：{{ order.total_price }}
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+
+
+                {% endfor %}
+
+
+                <div class="text-center" style="text-align: right;vertical-align: center;display: table;height: 30px;
+    margin: 50px auto;">
+
+                    <nav>
+                            <ul class="pagination">
+                                {% if all_orders.has_previous %}
+                                    <li class="page-item"><a class="page-link"
+                                                             href="?{{ all_orders.previous_page_number.querystring }}">上一页</a>
+                                    </li>
+                                {% endif %}
+                                {% for page in all_orders.pages %}
+
+                                    {% if page %}
+                                        {% ifequal page all_orders.number %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?{{ page.querystring }}"
+                                                   style="color: #c12e2a">{{ page }}</a>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?{{ page.querystring }}">{{ page }}</a>
+                                            </li>
+                                        {% endifequal %}
+
+                                    {% endif %}
+
+                                {% endfor %}
+                                {% if all_orders.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                           href="?{{ all_orders.next_page_number.querystring }}">下一页</a>
+                                    </li>
+                                {% endif %}
+
+
+                            </ul>
+                        </nav>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+<br>
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <h5 class="card-header">
+                关于网站
+            </h5>
+            <div class="card-block">
+                <p class="card-text">
+                    网站制作者：Smallj<br>
+                    网站名字：烟海书店电商网站<br>
+                    开始时间：2018.4.26
+                </p>
+            </div>
+            <div class="card-footer">
+                版权所有：Smallj
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <h5 class="card-header">
+                网站技术声明
+            </h5>
+            <div class="card-block">
+                <p class="card-text">
+                    网站技术使用：
+                    Django，<br>Bootstrap<br><br>
+                </p>
+            </div>
+            <div class="card-footer">
+                敬请关注
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="modal fade" id="mydialog" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">
+                    退换
+                </h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form method="post" action="{% url 'users:return' %}">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="form-group">
+
+                        <label for="id">出货单号
+
+                        </label>
+                        <input name="orderid" type="text" readonly="readonly" class="form-control" id="id" maxlength="100">
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="reason">退货原因
+
+                        </label>
+                        <input name="reason" type="text" class="form-control" id="reason" maxlength="100">
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-primary" value="提交申请">
+
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        关闭
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+</div>
+<script src="{% static 'bootstrap/js/jquery.min.js' %}"></script>
+<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'bootstrap/js/scripts.js' %}"></script>
+<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+<script>
+    $("button[name='return']").click(function () {
+
+        var out_id = $(this).parent().parent().children('td').eq(0).text();
+        $('#id').val(out_id);
+        $('#mydialog').modal('show');
+
+    })
+</script>
+
+</body>
+</html>

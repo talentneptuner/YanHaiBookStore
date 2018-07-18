@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>书单详情</title>
+
+    <meta name="description" content="Source code generated using layoutit.com">
+    <meta name="author" content="LayoutIt!">
+
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'bootstrap/css/style.css' %}" rel="stylesheet">
+
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+
+                <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <a class="navbar-brand" href="{% url 'index' %}">主页</a>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="navbar-nav">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{% url 'users:cart' %}">购物车 <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'booklist:search' %}">书单</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink"
+                               data-toggle="dropdown">书籍分类</a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="{% url 'commoditys:list'%}?keywords=文学">文学</a>
+                                <a class="dropdown-item" href="{% url 'commoditys:list'%}?keywords=计算机">计算机</a>
+                                <a class="dropdown-item" href="{% url 'commoditys:list'%}?keywords=教育">教育</a>
+                                <a class="dropdown-item" href="{% url 'commoditys:list'%}?keywords=社会科学">社会科学</a>
+                                <a class="dropdown-item" href="{% url 'commoditys:list'%}?keywords=艺术">艺术</a>
+                                <a class="dropdown-item" href="{% url 'commoditys:list'%}?keywords=法律">法律</a>
+                                <a class="dropdown-item" href="{% url 'commoditys:list'%}?keywords=政治军事">政治军事</a>
+                                <a class="dropdown-item" href="{% url 'commoditys:list'%}?keywords=自然科学">自然科学</a>
+                                </div>
+
+
+                        </li>
+                    </ul>
+                    <form class="form-inline" method="get" action="{% url 'commoditys:list' %}">
+                        <input class="form-control mr-sm-2" type="text" id="keywords" name="keywords">
+                        <button class="btn btn-primary my-2 my-sm-0" type="submit">
+                            搜索
+                        </button>
+                    </form>
+                    <ul class="navbar-nav ml-md-auto">
+                        {% if  request.user.is_authenticated %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="http://example.com"
+                                   id="navbarDropdownMenuLink1" data-toggle="dropdown">个人中心</a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="dropdown-item" href="{% url 'users:usercenter' %}">个人中心</a>
+                                    <a class="dropdown-item" href="{% url 'users:unpaidorder' %}">我的订单</a>
+                                    <a class="dropdown-item" href="{% url 'users:cart' %}">购物车</a>
+
+                                    <a class="dropdown-item" href="{% url 'users:wallet' %}">我的钱包</a>
+                                    <a class="dropdown-item" href="{% url 'users:addresslist' %}">我的地址</a>
+                                    <a class="dropdown-item" href="{% url 'users:message' %}">我的消息</a>
+                                    <div class="dropdown-divider">
+                                    </div>
+                                    <a class="dropdown-item" href="{% url 'users:logout' %}">退出登录</a>
+                                </div>
+                            </li>
+                        {% else %}
+                            <li class="nav-item active">
+                                <a class="nav-link" href="{% url 'users:login' %}">登录/注册 <span class="sr-only">(current)</span></a>
+                            </li>
+                        {% endif %}
+
+
+                    </ul>
+                </div>
+            </nav>
+        <br/>
+        </div>
+    </div>
+    <div class="row">
+        <br>
+        <div class="col-md-12">
+            <br>
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="row">
+                        <div class="col-md-7" style="text-align: center;max-width: 700px;max-height: 300px">
+                            <img alt="Bootstrap Image Preview" src="{{ MEDIA_URL }}{{ booklist.cover }}"
+                                 style="height: auto;width: auto;max-height: 100%;max-width: 100%">
+                            <br>
+                            <br>
+
+
+                        </div>
+                        <div class="col-md-5">
+                            <dl>
+                                <dt>
+                                    书单：
+                                </dt>
+                                <dd>
+                                    {{ booklist.title }}
+                                </dd>
+                                <dt>
+                                    用户：
+                                </dt>
+                                <dd>
+                                    {{ booklist.user.username }}
+                                </dd>
+                                <dt>
+                                    收藏数
+                                </dt>
+                                <dd>
+                                    {{ booklist.fav_nums }}
+                                </dd>
+                                <dt>
+                                    详情
+                                </dt>
+                                <dd>
+                                    <p>{{ booklist.desc }}</p>
+                                </dd>
+
+
+                            </dl>
+                            <p>
+                            <form method="get" action="{% url 'booklist:tocart' %}">{% csrf_token %}<input hidden="hidden" name="listid" value="{{ booklist.id }}">
+                                <a id="fav" class="btn btn-outline-primary" href="#">{% ifequal has_fav 0 %}收藏{% else %}已收藏{% endifequal %}</a>
+                                <button type="submit" class="btn btn-outline-primary">加入购物车</button></form>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <h6 class="text-left">
+                        推荐书单
+                    </h6>
+                    <hr style="height:1px;border:none;border-top:1px dotted #808080;"/>
+                    <div class="col-md-12 card">
+                        <table class="table" style="max-width: 300px;table-layout: fixed">
+                            <thead>
+                            <tr>
+                                <th>
+                                    书单
+                                </th>
+
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for re in recomend %}
+                                <tr>
+
+                                <td>
+                                    <a href="{% url 'booklist:detail' re.id %}">{{ re.title }}</a>
+                                </td>
+
+
+                            </tr>
+                            {% endfor %}
+
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+            <table class="table" style="margin-top: 20px;margin-bottom: 20px">
+                <thead>
+                <tr>
+                    <th>
+                        书籍
+                    </th>
+                    <th>
+                        作者
+                    </th>
+                    <th>
+                        出版社
+                    </th>
+                    <th>
+                        价格
+                    </th>
+                    <th>
+                        点击量
+                    </th>
+                    {% ifequal own 1 %}
+                        <th>删除？</th>
+                    {% endifequal %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for bookdetail in bookdetails %}
+                    <tr>
+                    <td>
+                        <a href="{% url 'commoditys:detail' bookdetail.commodity.id %}">{{ bookdetail.commodity.name }}</a>
+                    </td>
+                    <td>
+                        {{ bookdetail.commodity.author }}
+                    </td>
+                    <td>
+                        {{ bookdetail.commodity.publisher }}
+                    </td>
+                    <td>
+                        {{ bookdetail.commodity.price }}
+                    </td>
+                    <td>
+                        {{ bookdetail.commodity.click_nums }}
+                    </td>
+                    {% ifequal own 1 %}
+                        <td><a  href="{% url 'booklist:deltail' bookdetail.id %}">删除</a></td>
+                    {% endifequal %}
+                </tr>
+                {% endfor %}
+
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <h5 class="card-header">
+                关于网站
+            </h5>
+            <div class="card-block">
+                <p class="card-text">
+                    网站制作者：Smallj<br>
+                    网站名字：烟海书店电商网站<br>
+                    开始时间：2018.4.26
+                </p>
+            </div>
+            <div class="card-footer">
+                版权所有：Smallj
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <h5 class="card-header">
+                网站技术声明
+            </h5>
+            <div class="card-block">
+                <p class="card-text">
+                    网站技术使用：
+                    Django，<br>Bootstrap<br><br>
+                </p>
+            </div>
+            <div class="card-footer">
+                敬请关注
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<script src="{% static 'bootstrap/js/jquery.min.js' %}"></script>
+<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'bootstrap/js/scripts.js' %}"></script>
+<script>
+    $('#fav').on('click', function(){
+    add_fav($(this), {{ booklist.id }});
+});
+    function add_fav(current_elem, fav_id) {
+        $.ajax({
+        cache: false,
+        type: "POST",
+        url:"{% url 'booklist:add_fav' %}",
+        data:{'fav_id':fav_id},
+        async: true,
+        beforeSend:function(xhr, settings){
+            xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+        },
+        success: function(data) {
+            if(data.status == 'fail'){
+                if(data.msg == '用户未登录'){
+                    alert(data.msg)
+                    window.location.href='{% url "users:login" %}'
+                }else{
+                    alert(data.msg)
+                }
+
+            }else if(data.status == 'success'){
+                current_elem.text(data.msg)
+            }
+        },
+    });
+    }
+</script>
+</body>
+</html>

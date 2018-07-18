@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>忘记密码</title>
+
+    <meta name="description" content="Source code generated using layoutit.com">
+    <meta name="author" content="LayoutIt!">
+
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'bootstrap/css/style.css' %}" rel="stylesheet">
+
+  </head>
+  <body style="font-family: 微软雅黑">
+  <div class="container-fluid">
+  <div class="row">
+		<div class="col-md-12">
+			<nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+
+                <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <a class="navbar-brand" href="{% url 'index' %}">主页</a>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="navbar-nav">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{% url 'users:cart' %}">购物车 <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'booklist:search' %}">书单</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink"
+                               data-toggle="dropdown">书籍分类</a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="{% url 'commoditys:list'%}?keywords=文学">文学</a>
+                                <a class="dropdown-item" href="{% url 'commoditys:list'%}?keywords=计算机">计算机</a>
+                                <a class="dropdown-item" href="{% url 'commoditys:list'%}?keywords=教育">教育</a>
+                                <a class="dropdown-item" href="{% url 'commoditys:list'%}?keywords=社会科学">社会科学</a>
+                                <a class="dropdown-item" href="{% url 'commoditys:list'%}?keywords=艺术">艺术</a>
+                                <a class="dropdown-item" href="{% url 'commoditys:list'%}?keywords=法律">法律</a>
+                                <a class="dropdown-item" href="{% url 'commoditys:list'%}?keywords=政治军事">政治军事</a>
+                                <a class="dropdown-item" href="{% url 'commoditys:list'%}?keywords=自然科学">自然科学</a>
+                                </div>
+
+
+                        </li>
+                    </ul>
+                    <form class="form-inline" method="get" action="{% url 'commoditys:list' %}">
+                        <input class="form-control mr-sm-2" type="text" id="keywords" name="keywords">
+                        <button class="btn btn-primary my-2 my-sm-0" type="submit">
+                            搜索
+                        </button>
+                    </form>
+                    <ul class="navbar-nav ml-md-auto">
+                        {% if  request.user.is_authenticated %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="http://example.com"
+                                   id="navbarDropdownMenuLink1" data-toggle="dropdown">个人中心</a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="dropdown-item" href="{% url 'users:usercenter' %}">个人中心</a>
+                                    <a class="dropdown-item" href="{% url 'users:unpaidorder' %}">我的订单</a>
+                                    <a class="dropdown-item" href="{% url 'users:cart' %}">购物车</a>
+
+                                    <a class="dropdown-item" href="{% url 'users:wallet' %}">我的钱包</a>
+                                    <a class="dropdown-item" href="{% url 'users:addresslist' %}">我的地址</a>
+                                    <a class="dropdown-item" href="{% url 'users:message' %}">我的消息</a>
+                                    <div class="dropdown-divider">
+                                    </div>
+                                    <a class="dropdown-item" href="{% url 'users:logout' %}">退出登录</a>
+                                </div>
+                            </li>
+                        {% else %}
+                            <li class="nav-item active">
+                                <a class="nav-link" href="{% url 'users:login' %}">登录/注册 <span class="sr-only">(current)</span></a>
+                            </li>
+                        {% endif %}
+
+
+                    </ul>
+                </div>
+            </nav>
+
+		</div>
+	</div>
+  <div class="col-md-12" style=" padding:46px 0;  height: 700px;background-image:url({% static 'img/regadv.jpg' %});background-size: cover;text-align: center">
+    <h4><span style="color: cornflowerblue;">忘记密码</span></h4>
+      <br>
+   <div class="col-md-4" style="margin: 0 auto;text-align: left" >
+			<form role="form" autocomplete="off" method="post" action="{% url 'users:forgetpwd' %}">
+				<div class="form-group">
+
+					<label for="email">
+						邮件
+					</label>
+					<input class="form-control" id="email" name="email" type="email" placeholder="邮箱">
+				</div>
+                <div class="form-group">
+
+					<label for="captcha">
+						验证码
+					</label>
+                    <div class="form-group">
+
+					<input type="text" style="width: 70%;float: left" class="form-control"  id="code" name="code" placeholder="邮箱验证码">
+					<span class="input-group-btn">
+						<button class="btn btn-primary" type="button" style="width:auto;float: right" id="getcaptcha">
+							获取验证码
+						</button>
+					</span>
+                        </div>
+				</div>
+				<div class="form-group">
+
+					<label for="password1">
+						新密码
+					</label>
+					<input class="form-control" id="password1" name="password1" type="password" placeholder="密码">
+				</div>
+                <div class="form-group">
+
+					<label for="password2">
+						确认密码
+					</label>
+					<input class="form-control" id="password2" name="password2" type="password" placeholder="确认您的密码">
+				</div>
+				<div class="form-group">
+
+
+
+					<label>
+						<span style="font-size: smaller"><a href="{% url 'users:login' %}">已有账号？立即登录</a></span>
+                        &nbsp;&nbsp;&nbsp;
+
+					</label>
+				</div>
+                <div class="form-group"><span style="color: #cc3300;font-size: x-small">
+                    {{ msg }}
+                    {% for key,error in forgetpwd_form.errors.items %}{{ error }}{% endfor %}
+                </span></div>
+				<button type="submit" class="btn btn-primary form-control">
+					确认修改
+				</button>
+            {% csrf_token %}
+			</form>
+		</div>
+
+  </div>
+  <div class="row">
+		<div class="col-md-6">
+			<div class="card">
+				<h5 class="card-header">
+					关于网站
+				</h5>
+				<div class="card-block">
+					<p class="card-text">
+						网站制作者：Smallj<br>
+                        网站名字：烟海书店电商网站<br>
+                        开始时间：2018.4.26
+					</p>
+				</div>
+				<div class="card-footer">
+					版权所有：Smallj
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="card">
+				<h5 class="card-header">
+					网站技术声明
+				</h5>
+				<div class="card-block">
+					<p class="card-text">
+						网站技术使用：
+                        Django，<br>Bootstrap<br><br>
+					</p>
+				</div>
+				<div class="card-footer">
+					敬请关注
+				</div>
+			</div>
+		</div>
+	</div>
+  </div>
+    <script src="{% static 'bootstrap/js/jquery.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/scripts.js' %}"></script>
+
+  <script type="text/javascript">
+        $(function () {
+            $('#getcaptcha').click(function () {
+                var email = $('#email').val();
+                if (email==""){
+                    alert("邮箱不得为空");
+                    return 1;
+                }
+                $.ajax({
+                    cache: false,
+                    type: "POST",
+                    url: "{% url 'users:getcode' %}",
+                    data: {'email': email,'type':'forgetpwd'},
+                    async: true,
+                    beforeSend: function (xhr, settings) {
+                        xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                    },
+                    success: function (data) {
+                        if (data.status == 'fail') {
+                            alert("发送失败");
+
+                        } else if (data.status == 'success') {
+                            alert("发送成功，请查收,注意检查您的垃圾箱");
+                        }
+                    },
+                });
+                var count = 30;
+                var countdown = setInterval(CountDown, 1000);
+                function CountDown() {
+                    $("#getcaptcha").attr("disabled", true);
+                    $("#getcaptcha").text("请等待 " + count + " 秒!");
+                    if (count == 0) {
+                        $("#getcaptcha").val("Submit").removeAttr("disabled");
+                        $("#getcaptcha").text("获取验证码")
+                        clearInterval(countdown);
+                    }
+                    count--;
+                }
+            })
+
+        });
+   </script>
+  </body>
+</html>
